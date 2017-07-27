@@ -1,8 +1,9 @@
 package org.cloudfoundry.samples.music.repositories;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collection;
+
 import org.cloudfoundry.samples.music.domain.Album;
+import org.cloudfoundry.samples.music.repositories.jpa.JpaAlbumRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
@@ -15,12 +16,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.init.Jackson2ResourceReader;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class AlbumRepositoryPopulator implements ApplicationListener<ContextRefreshedEvent>, ApplicationContextAware {
-    private final Jackson2ResourceReader resourceReader;
-    private final Resource sourceData;
+    
+	private final Jackson2ResourceReader resourceReader;
+    
+	private final Resource sourceData;
 
     private ApplicationContext applicationContext;
 
@@ -39,8 +43,8 @@ public class AlbumRepositoryPopulator implements ApplicationListener<ContextRefr
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (event.getApplicationContext().equals(applicationContext)) {
-            CrudRepository albumRepository =
-                    BeanFactoryUtils.beanOfTypeIncludingAncestors(applicationContext, CrudRepository.class);
+            JpaAlbumRepository albumRepository =
+                    BeanFactoryUtils.beanOfTypeIncludingAncestors(applicationContext, JpaAlbumRepository.class);
 
             if (albumRepository != null && albumRepository.count() == 0) {
                 populate(albumRepository);
@@ -49,7 +53,7 @@ public class AlbumRepositoryPopulator implements ApplicationListener<ContextRefr
 
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void populate(CrudRepository repository) {
         Object entity = getEntityFromResource(sourceData);
 
@@ -59,6 +63,7 @@ public class AlbumRepositoryPopulator implements ApplicationListener<ContextRefr
                     repository.save(album);
                 }
             }
+            
         } else {
             repository.save(entity);
         }
@@ -67,6 +72,7 @@ public class AlbumRepositoryPopulator implements ApplicationListener<ContextRefr
     private Object getEntityFromResource(Resource resource) {
         try {
             return resourceReader.readFrom(resource, this.getClass().getClassLoader());
+            
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,7 +1,9 @@
 package org.cloudfoundry.samples.music.domain;
 
 public class ApplicationInfo {
+	
     private String[] profiles;
+    
     private String[] services;
 
     public ApplicationInfo(String[] profiles, String[] services) {

@@ -1,14 +1,15 @@
 package org.cloudfoundry.samples.music.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class Album {
+	
     @Id
     @Column(length=40)
     @GeneratedValue(generator="randomId")
@@ -16,10 +17,15 @@ public class Album {
     private String id;
 
     private String title;
+    
     private String artist;
+    
     private String releaseYear;
+    
     private String genre;
+    
     private int trackCount;
+    
     private String albumId;
 
     public Album() {
