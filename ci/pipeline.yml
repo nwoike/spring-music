@@ -8,13 +8,13 @@ resource_types:
 resources:
 - name: git-repo
   type: git
-  source: &maven-repo
+  source: &git-repo
     uri: https://github.com/nwoike/spring-music.git
     branch: ci
 - name: maven-cache
   type: maven-cache
   source:
-    <<: *maven-repo
+    <<: *git-repo
     paths:
       - pom.xml
 
