@@ -8,7 +8,6 @@ image_resource:
 
 inputs:
 - name: git-repo
-- name: maven-cache
 
 run:
   path: ./git-repo/ci/build.sh
