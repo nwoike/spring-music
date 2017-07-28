@@ -2,4 +2,4 @@
 
 set -e
 
-mvn -B clean package
+mvn -B -f git-repo/pom.xml clean package
