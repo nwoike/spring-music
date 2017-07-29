@@ -26,5 +26,4 @@ jobs:
   - put: deployment
     params:
       manifest: git-repo/manifest.yml
-      path: git-repo
       current_app_name: spring-music
