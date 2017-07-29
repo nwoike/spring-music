@@ -9,5 +9,8 @@ image_resource:
 inputs:
 - name: git-repo
 
+outputs:
+- name: target
+
 run:
   path: ./git-repo/ci/build.sh

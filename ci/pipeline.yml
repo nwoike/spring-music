@@ -4,13 +4,27 @@ resources:
   source:
     uri: https://github.com/nwoike/spring-music.git
     branch: ci
+- name: deployment
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    username: ((cf-username))
+    password: ((cf-password))
+    organization: ((cf-org))
+    space: ((cf-space))
+    skip_cert_check: true
 
 jobs:
 - name: build
+  serial: true
   plan:
   - get: git-repo
     trigger: true
   - task: package
     privileged: true
     file: git-repo/ci/build.yml
-
+  - put: deployment
+    params:
+      manifest: git-repo/manifest.yml
+      path: git-repo
+      current_app_name: spring-music
